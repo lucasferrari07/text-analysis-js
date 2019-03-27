@@ -19,6 +19,10 @@ function itemCounts(array) {
     counts.set(a, value + 1);
   }
 
+  counts.forEach((count, elem) => {
+    console.log(elem, count);
+  });
+
   return counts;
 }
 
