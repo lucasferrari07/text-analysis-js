@@ -1,4 +1,4 @@
-const { itemCounts } = require('../textalyze');
+const { itemCounts, stringToCharacters } = require('../textalyze');
 
 describe('itemCount', () => {
   test('returns a count of the strings in the array', () => {
@@ -34,5 +34,13 @@ describe('itemCount', () => {
     const expectedOutput = new Map([['a', 2], ['A', 2]]);
 
     expect(itemCounts(input)).toEqual(expectedOutput);
+  });
+});
+
+describe('stringToCharacters', () => {
+  test('returns an Array of characters contained in a string', () => {
+    const input = 'Proxi rules!';
+    const expectedOutput = ['P', 'r', 'o', 'x', 'i', ' ', 'r', 'u', 'l', 'e', 's', '!'];
+    expect(stringToCharacters(input)).toEqual(expectedOutput);
   });
 });
