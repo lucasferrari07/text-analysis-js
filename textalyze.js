@@ -14,10 +14,22 @@ function itemCounts(array) {
   }, new Map());
 }
 
+/**
+ * Given an input string, returns an Array of all the characters in the string
+ * @param {string} text
+ */
+function stringToCharacters(text) {
+  return text.split('');
+}
+
 if (require.main === module) {
   const elements = ['a', 'a', 'a', 'b', 'b', 'c'];
   console.log(`Count for [${elements}] is...`);
   console.table(itemCounts(elements));
+
+  const text = 'Testing the stringToCharacters function, it should split this string into an array.';
+  console.log(`Count for ${text} is...`);
+  console.table(itemCounts(stringToCharacters(text)));
 }
 
-module.exports = { itemCounts };
+module.exports = { itemCounts, stringToCharacters };
