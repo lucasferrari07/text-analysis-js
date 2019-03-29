@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 /**
  * Given an input Array, returns a Map containing the count of each item in the input.
  * @param {Array} array - The array of items to count
@@ -34,18 +36,25 @@ function sanitize(text) {
 }
 
 if (require.main === module) {
-  const text = 'Testing the stringToCharacters function, it should split this string into an array.';
-  console.log(`Count for ${text} is...`);
-  console.table(itemCounts(stringToCharacters(sanitize(text))));
+  const file = 'tale-of-two-cities.txt';
+
+  console.log(`Count for ${file} is...`);
 
   // this is @jfarmer 's approach, just leaving it here so I can remember
   // const compose2 = (f, g) => x => f(g(x));
   // const compose = (...funcs) => funcs.reduce(compose2);
   // const printCounts = counts => console.table(counts);
-
   // const program = compose(printCounts, itemCounts, stringToCharacters, sanitize);
 
-  // program(text);
+  const program = x => console.table(itemCounts(stringToCharacters(sanitize(x))));
+
+  fs.readFile(`sample_data/${file}`, (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      program(data.toString());
+    }
+  });
 }
 
 module.exports = { itemCounts, stringToCharacters, sanitize };
