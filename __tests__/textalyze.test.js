@@ -53,7 +53,6 @@ describe('sanitize', () => {
     const expectedOutput = 'proxirules';
     expect(sanitize(input)).toEqual(expectedOutput);
   });
-
 });
 
 describe('itemFrequency', () => {
