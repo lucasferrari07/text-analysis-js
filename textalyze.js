@@ -43,7 +43,7 @@ function stringToCharacters(text) {
  */
 function sanitize(text) {
   if (typeof text === 'string' || text instanceof String) {
-    return text.toLowerCase().match(/[a-zA-Z]+/g).join('');
+    return text.toLowerCase().replace(/[^a-zA-Z]+/g, '');
   }
   return null;
 }
