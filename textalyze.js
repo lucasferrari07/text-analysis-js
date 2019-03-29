@@ -36,9 +36,7 @@ function sanitize(text) {
 }
 
 if (require.main === module) {
-  const file = 'tale-of-two-cities.txt';
-
-  console.log(`Count for ${file} is...`);
+  const file = process.argv.length >= 3 ? process.argv[2] : 'tale-of-two-cities.txt';
 
   // this is @jfarmer 's approach, just leaving it here so I can remember
   // const compose2 = (f, g) => x => f(g(x));
@@ -50,8 +48,9 @@ if (require.main === module) {
 
   fs.readFile(`sample_data/${file}`, (err, data) => {
     if (err) {
-      console.log(err);
+      console.error(`Program failed opening '${file}', please try another one.`);
     } else {
+      console.log(`Count for ${file} is...`);
       program(data.toString());
     }
   });
