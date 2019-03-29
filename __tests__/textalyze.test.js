@@ -1,4 +1,4 @@
-const { itemCounts, stringToCharacters } = require('../textalyze');
+const { itemCounts, stringToCharacters, sanitize } = require('../textalyze');
 
 describe('itemCount', () => {
   test('returns a count of the strings in the array', () => {
@@ -42,5 +42,18 @@ describe('stringToCharacters', () => {
     const input = 'Proxi rules!';
     const expectedOutput = ['P', 'r', 'o', 'x', 'i', ' ', 'r', 'u', 'l', 'e', 's', '!'];
     expect(stringToCharacters(input)).toEqual(expectedOutput);
+  });
+});
+describe('sanitize', () => {
+  test('returns a string lower-cased', () => {
+    const input = 'Proxi Rules!';
+    const expectedOutput = 'proxi rules!';
+    expect(sanitize(input)).toEqual(expectedOutput);
+  });
+
+  test('it takes non-string inputs', () => {
+    const input = 5;
+    const expectedOutput = 5;
+    expect(sanitize(input)).toEqual(expectedOutput);
   });
 });

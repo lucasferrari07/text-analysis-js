@@ -22,14 +22,30 @@ function stringToCharacters(text) {
   return text.split('');
 }
 
-if (require.main === module) {
-  const elements = ['a', 'a', 'a', 'b', 'b', 'c'];
-  console.log(`Count for [${elements}] is...`);
-  console.table(itemCounts(elements));
-
-  const text = 'Testing the stringToCharacters function, it should split this string into an array.';
-  console.log(`Count for ${text} is...`);
-  console.table(itemCounts(stringToCharacters(text)));
+/**
+ * Given an input value, returns it lower-cased if it's a string
+ * @param {any} text
+ */
+function sanitize(text) {
+  if (typeof text === 'string' || text instanceof String) {
+    return text.toLowerCase();
+  }
+  return text;
 }
 
-module.exports = { itemCounts, stringToCharacters };
+if (require.main === module) {
+  const text = 'Testing the stringToCharacters function, it should split this string into an array.';
+  console.log(`Count for ${text} is...`);
+  console.table(itemCounts(stringToCharacters(sanitize(text))));
+
+  // this is @jfarmer 's approach, just leaving it here so I can remember
+  // const compose2 = (f, g) => x => f(g(x));
+  // const compose = (...funcs) => funcs.reduce(compose2);
+  // const printCounts = counts => console.table(counts);
+
+  // const program = compose(printCounts, itemCounts, stringToCharacters, sanitize);
+
+  // program(text);
+}
+
+module.exports = { itemCounts, stringToCharacters, sanitize };
