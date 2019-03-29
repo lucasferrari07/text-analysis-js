@@ -6,7 +6,7 @@ const fs = require('fs');
  * @returns {Map} counts - A Map containing the counts of the items in the input array
  */
 function itemCounts(array) {
-  return array.reduce((map, a) => {
+  return array.sort().reduce((map, a) => {
     if (map.has(a)) {
       map.set(a, map.get(a) + 1);
     } else {
@@ -43,9 +43,21 @@ function stringToCharacters(text) {
  */
 function sanitize(text) {
   if (typeof text === 'string' || text instanceof String) {
-    return text.toLowerCase();
+    return text.toLowerCase().match(/[a-zA-Z]+/g).join('');
   }
-  return text;
+  return null;
+}
+
+/**
+ * Prints text frequencies histogram
+ * @param {Map} frequencies
+ */
+function printHistogram(frequencies) {
+  frequencies.forEach((freq, value) => {
+    const percentage = `[${freq < 0.1 ? ' ' : ''}${(freq * 100).toFixed(2)}%]`;
+    const length = ''.padStart(Math.floor(freq / 0.005), '=');
+    console.log(value, percentage, length);
+  });
 }
 
 if (require.main === module) {
@@ -57,19 +69,16 @@ if (require.main === module) {
   // const printCounts = counts => console.table(counts);
   // const program = compose(printCounts, itemCounts, stringToCharacters, sanitize);
 
-  const program = x => console.table(itemCounts(stringToCharacters(sanitize(x))));
+  const program = x => printHistogram(itemFrequencyCounter(stringToCharacters(sanitize(x))));
 
   fs.readFile(file, (err, data) => {
     if (err) {
       console.error(`Program failed opening '${file}', please try another one.`);
     } else {
-      console.log(`Count for ${file} is...`);
+      console.log(`Character frequency for ${file} is...`);
       program(data.toString());
     }
   });
-
-  const test = 'AaBbcCdD';
-  console.table(itemFrequencyCounter(stringToCharacters(sanitize(test))));
 }
 
 module.exports = {
