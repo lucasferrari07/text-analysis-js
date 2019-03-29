@@ -1,4 +1,6 @@
-const { itemCounts, stringToCharacters, sanitize } = require('../textalyze');
+const {
+  itemCounts, stringToCharacters, sanitize, itemFrequencyCounter,
+} = require('../textalyze');
 
 describe('itemCount', () => {
   test('returns a count of the strings in the array', () => {
@@ -44,6 +46,7 @@ describe('stringToCharacters', () => {
     expect(stringToCharacters(input)).toEqual(expectedOutput);
   });
 });
+
 describe('sanitize', () => {
   test('returns a string lower-cased', () => {
     const input = 'Proxi Rules!';
@@ -55,5 +58,13 @@ describe('sanitize', () => {
     const input = 5;
     const expectedOutput = 5;
     expect(sanitize(input)).toEqual(expectedOutput);
+  });
+});
+
+describe('itemFrequency', () => {
+  test('returns a Map with an array item frequencies', () => {
+    const input = ['one', 'two', 'three', 'one', 'two', 'ZZZZ'];
+    const expectedOutput = new Map([['one', 2 / 6], ['two', 2 / 6], ['three', 1 / 6], ['ZZZZ', 1 / 6]]);
+    expect(itemFrequencyCounter(input)).toEqual(expectedOutput);
   });
 });

@@ -17,6 +17,19 @@ function itemCounts(array) {
 }
 
 /**
+ * Given an input Array, returns a Map with the frequency of each item in the input
+ * @param {Array} array
+ */
+function itemFrequencyCounter(array) {
+  const counts = itemCounts(array);
+  const frequencies = new Map();
+  counts.forEach((count, value) => {
+    frequencies.set(value, count / array.length);
+  });
+  return frequencies;
+}
+
+/**
  * Given an input string, returns an Array of all the characters in the string
  * @param {string} text
  */
@@ -36,7 +49,7 @@ function sanitize(text) {
 }
 
 if (require.main === module) {
-  const file = process.argv.length >= 3 ? process.argv[2] : 'tale-of-two-cities.txt';
+  const file = process.argv.length >= 3 ? process.argv[2] : 'sample_data/tale-of-two-cities.txt';
 
   // this is @jfarmer 's approach, just leaving it here so I can remember
   // const compose2 = (f, g) => x => f(g(x));
@@ -46,7 +59,7 @@ if (require.main === module) {
 
   const program = x => console.table(itemCounts(stringToCharacters(sanitize(x))));
 
-  fs.readFile(`sample_data/${file}`, (err, data) => {
+  fs.readFile(file, (err, data) => {
     if (err) {
       console.error(`Program failed opening '${file}', please try another one.`);
     } else {
@@ -54,6 +67,11 @@ if (require.main === module) {
       program(data.toString());
     }
   });
+
+  const test = 'AaBbcCdD';
+  console.table(itemFrequencyCounter(stringToCharacters(sanitize(test))));
 }
 
-module.exports = { itemCounts, stringToCharacters, sanitize };
+module.exports = {
+  itemCounts, stringToCharacters, sanitize, itemFrequencyCounter,
+};
