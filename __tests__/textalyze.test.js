@@ -50,13 +50,7 @@ describe('stringToCharacters', () => {
 describe('sanitize', () => {
   test('returns a string lower-cased', () => {
     const input = 'Proxi Rules!';
-    const expectedOutput = 'proxi rules!';
-    expect(sanitize(input)).toEqual(expectedOutput);
-  });
-
-  test('it takes non-string inputs', () => {
-    const input = 5;
-    const expectedOutput = 5;
+    const expectedOutput = 'proxirules';
     expect(sanitize(input)).toEqual(expectedOutput);
   });
 });

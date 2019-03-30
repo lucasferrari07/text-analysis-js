@@ -43,13 +43,27 @@ function stringToCharacters(text) {
  */
 function sanitize(text) {
   if (typeof text === 'string' || text instanceof String) {
-    return text.toLowerCase();
+    return text.toLowerCase().replace(/[^a-zA-Z]+/g, '');
   }
-  return text;
+  return null;
+}
+
+/**
+ * Prints text frequencies histogram
+ * @param {Map} frequencies
+ */
+function printHistogram(frequencies) {
+  const maxWidth = 300;
+  Array.from(frequencies.keys()).sort().forEach((letter) => {
+    const freq = frequencies.get(letter);
+    const freqStr = (freq * 100).toFixed(2).padStart(5, ' ');
+    const bar = '='.repeat(freq * maxWidth);
+    console.log(`${letter} [${freqStr}%] ${bar}`);
+  });
 }
 
 if (require.main === module) {
-  const file = process.argv.length >= 3 ? process.argv[2] : 'sample_data/tale-of-two-cities.txt';
+  const path = process.argv.length >= 3 ? process.argv[2] : 'sample_data/tale-of-two-cities.txt';
 
   // this is @jfarmer 's approach, just leaving it here so I can remember
   // const compose2 = (f, g) => x => f(g(x));
@@ -57,19 +71,18 @@ if (require.main === module) {
   // const printCounts = counts => console.table(counts);
   // const program = compose(printCounts, itemCounts, stringToCharacters, sanitize);
 
-  const program = x => console.table(itemCounts(stringToCharacters(sanitize(x))));
+  const printFileHistogram = (file) => {
+    printHistogram(itemFrequencyCounter(stringToCharacters(sanitize(file))));
+  };
 
-  fs.readFile(file, (err, data) => {
+  fs.readFile(path, (err, data) => {
     if (err) {
-      console.error(`Program failed opening '${file}', please try another one.`);
+      console.error(`Program failed opening '${path}', please try another one.`);
     } else {
-      console.log(`Count for ${file} is...`);
-      program(data.toString());
+      console.log(`Character frequency for ${path} is...`);
+      printFileHistogram(data.toString());
     }
   });
-
-  const test = 'AaBbcCdD';
-  console.table(itemFrequencyCounter(stringToCharacters(sanitize(test))));
 }
 
 module.exports = {
